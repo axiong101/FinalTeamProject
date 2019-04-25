@@ -1,0 +1,52 @@
+package application;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class AddQuestion extends Application {
+	public void start(Stage primaryStage) {
+		try {
+
+		    VBox vb = new VBox();
+		    vb.setPadding(new Insets(20, 50, 50, 50));
+		    vb.setSpacing(10);
+
+		    Label topLabel = new Label("What Topic?");
+		    vb.getChildren().add(topLabel);
+
+		    ComboBox cb = new ComboBox();
+			cb.getItems().add("Movies");
+			cb.getItems().add("Video Games");
+			cb.getItems().add("Food");
+		    vb.getChildren().add(cb);
+
+		    Button b1 = new Button("Create new Topic");
+		 
+		    vb.getChildren().add(b1);
+
+		    Label label = new Label("Type Your Question");
+		 
+		    vb.getChildren().add(label);
+		    
+		    TextField tf = new TextField();
+		    vb.getChildren().add(tf);
+		    Button b2 = new Button("Add");
+		    vb.getChildren().add(b2);
+		    // Adding VBox to the scene
+		    Scene scene = new Scene(vb);
+		    primaryStage.setScene(scene);
+		    primaryStage.show();
+		   // primaryStage.close();
+
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
