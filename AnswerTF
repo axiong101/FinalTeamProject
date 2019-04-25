@@ -1,0 +1,32 @@
+package application;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class AnswerTF extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		// TODO Auto-generated method stub
+		 VBox vb = new VBox();
+		    vb.setPadding(new Insets(20, 50, 50, 50));
+		    vb.setSpacing(10);
+		    Label topLabel = new Label("Answer");
+		    vb.getChildren().add(topLabel);
+		    Button b1 = new Button("True");
+		    vb.getChildren().add(b1);
+		    Button b2 = new Button("False");
+		    vb.getChildren().add(b2);
+		    Button b3 = new Button("Done");
+		    vb.getChildren().add(b3);
+		    Scene scene = new Scene(vb);
+		    primaryStage.setScene(scene);
+		    primaryStage.show();
+	}
+	}
+	
