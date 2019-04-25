@@ -1,0 +1,39 @@
+package application;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+public class MultipleChoice extends Application {
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		  VBox Vb = new VBox();
+		    Vb.setPadding(new Insets(20, 50, 50, 50));
+		    Vb.setSpacing(10);
+		    Label topLabel = new Label("Create your multiple choice");
+		    Vb.getChildren().add(topLabel);
+		    TextField tf1 = new TextField();
+		    Vb.getChildren().add(tf1);
+		    TextField tf2 = new TextField();
+		    Vb.getChildren().add(tf2);
+		    TextField tf3 = new TextField();
+		    Vb.getChildren().add(tf3);
+		    TextField tf4 = new TextField();
+		    Vb.getChildren().add(tf4);
+		    Button b1 = new Button("Done");
+		   b1.setTranslateX(150);
+		    b1.setTranslateY(30);
+		    Vb.getChildren().add(b1);
+		    Scene scene = new Scene(Vb);
+		    primaryStage.setScene(scene);
+		    primaryStage.show();
+		
+	}
+
+}
