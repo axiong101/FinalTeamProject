@@ -31,14 +31,15 @@ public class QuizGraph {
   }
 
   /**
-   * Add new vertex to the graph.
+   * Add new topic to the graph.
    *
-   * If vertex is null or already exists, method ends without adding a vertex or throwing an
+   * If topic is null or already exists, method ends without adding a topic or throwing an
    * exception.
    * 
-   * Valid argument conditions: 1. vertex is non-null 2. vertex is not already in the graph
+   * @param vertex
+   * Valid argument conditions: 1. topic is non-null 2. topic is not already in the graph
    */
-  public void addTopic(String vertex) {
+  public void addTopic(String vertex) { //adds a topic to the string
     if (vertex != null) {
       graph.put(vertex, new ArrayList<QuestionNode>());
       topicNum++;
@@ -46,14 +47,15 @@ public class QuizGraph {
   }
 
   /**
-   * Remove a vertex and all associated edges from the graph.
+   * Remove a topic and all associated questions from the graph.
    * 
-   * If vertex is null or does not exist, method ends without removing a vertex, edges, or throwing
+   * If topic is null or does not exist, method ends without removing a topic, question, or throwing
    * an exception.
    * 
-   * Valid argument conditions: 1. vertex is non-null 2. vertex is not already in the graph
+   * @param vertex
+   * Valid argument conditions: 1. topics is non-null 2. topic is not already in the graph
    */
-  public void removeTopic(String vertex) {
+  public void removeTopic(String vertex) { // remove a topic from list
     if (vertex != null) {
       if (graph.containsKey(vertex)) {
         graph.remove(vertex);
@@ -63,10 +65,13 @@ public class QuizGraph {
   }
 
   /**
-   * Add the edge from vertex1 to vertex2 to this graph. (edge is directed and unweighted) If either
-   * vertex does not exist, no edge is added and no exception is thrown. If the edge exists in the
-   * graph, no edge is added and no exception is thrown.
+   * Add the question with topic and question. (edge is directed and unweighted) If either
+   * topic or question is not present then no questions will be added and no exceptions will be thrown. 
+   * If the question exists in the
+   * graph, no question is added and no exception is thrown.
    * 
+   * @param String topic
+   * @param String question
    * Valid argument conditions: 1. neither vertex is null 2. both vertices are in the graph 3. the
    * edge is not in the graph
    */
@@ -87,7 +92,7 @@ public class QuizGraph {
 
 
   /**
-   * Returns a Set that contains all the vertices
+   * Returns a Set that contains all the questions
    * 
    */
   public Set<String> getAllTopics() {
@@ -95,7 +100,7 @@ public class QuizGraph {
   }
 
   /**
-   * Get all the neighbor (adjacent) vertices of a vertex
+   * Get all the neighbor (adjacent) topics of a topics
    *
    */
   public List<QuestionNode> getTopicQuestions(String topic) {
@@ -105,17 +110,16 @@ public class QuizGraph {
 
 
   /**
-   * Returns the number of edges in this graph.
+   * Returns the number of questions in this graph.
    */
   public int questionNum() {
     return questionNum;
   }
 
   /**
-   * Returns the number of vertices in this graph.
+   * Returns the number of topics in this graph.
    */
   public int topicNum() {
     return topicNum;
   }
 }
-
