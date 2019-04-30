@@ -7,12 +7,11 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class QuizGraph {
-  private TreeMap<String, ArrayList<QuestionNode>> graph; // Arraylist that contains an arraylist of
-                                                    // strings
+  private TreeMap<String, ArrayList<QuestionNode>> graph; 
+  // Arraylist that contains an arraylist of strings
   // index 0 of the second arraylist holds the vertexes in
   // the graph.
-  // the index after 0 hold the other vertexes that it points
-  // to
+  // the index after 0 hold the other vertexes that it points to
   private int questionNum;
   private int topicNum;
   private Set<String> topicSet;
@@ -39,7 +38,8 @@ public class QuizGraph {
    * @param vertex
    * Valid argument conditions: 1. topic is non-null 2. topic is not already in the graph
    */
-  public void addTopic(String vertex) { //adds a topic to the string
+  public void addTopic(String vertex) { 
+    //adds a topic to the string
     if (vertex != null) {
       graph.put(vertex, new ArrayList<QuestionNode>());
       topicNum++;
@@ -55,7 +55,8 @@ public class QuizGraph {
    * @param vertex
    * Valid argument conditions: 1. topics is non-null 2. topic is not already in the graph
    */
-  public void removeTopic(String vertex) { // remove a topic from list
+  public void removeTopic(String vertex) { 
+    // remove a topic from list
     if (vertex != null) {
       if (graph.containsKey(vertex)) {
         graph.remove(vertex);
@@ -72,8 +73,8 @@ public class QuizGraph {
    * 
    * @param String topic
    * @param String question
-   * Valid argument conditions: 1. neither vertex is null 2. both vertices are in the graph 3. the
-   * edge is not in the graph
+   * Valid argument conditions: 1. neither topic is null 2. both topics are in the graph 3. the
+   * question is not in the graph
    */
   public void addQuestion(String topic, QuestionNode question) {
     if (topic != null && question != null) {
@@ -103,8 +104,7 @@ public class QuizGraph {
    * Get all the neighbor (adjacent) topics of a topics
    *
    */
-  public List<QuestionNode> getTopicQuestions(String topic) {
-
+  public ArrayList<QuestionNode> getTopicQuestions(String topic) {
     return graph.get(topic);
   }
 
