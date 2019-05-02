@@ -1,5 +1,10 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -18,20 +24,29 @@ public class TakeQuizButton {
   Button takeQuizButton;
   Scene takeButtonQuizScene;
   Scene questionScreen;
+  Scene mainScene;
+  Stage primaryStage;
   BorderPane root;
   Button helper;
   Button next;
   int maxQuestions;
   int qNum;
+  QuizGraph quiz;
+  ComboBox topic;
+  String topicTested;
+  ArrayList<QuestionNode> questionList;
 
-  protected TakeQuizButton(Stage primaryStage, Scene mainScene, int qNum) {
+  protected TakeQuizButton(Stage primaryStage, Scene mainScene, int qNum, QuizGraph quiz) {
 
+    this.quiz = quiz;
     root = new BorderPane();
     this.qNum = qNum;
+    this.mainScene = mainScene;
+    this.primaryStage = primaryStage;
 
     // set top
     HBox top = new HBox();
-    helper = new Button("?");
+    helper = new Button("help");
     top.getChildren().add(helper);
     top.setAlignment(Pos.TOP_RIGHT);
     root.setTop(top);
@@ -42,12 +57,15 @@ public class TakeQuizButton {
     VBox topicBox = new VBox();
     Label whatTopic = new Label("What Topic?");
     whatTopic.setAlignment(Pos.CENTER);
-    ComboBox topic = new ComboBox();
-    topic.getItems().addAll("topic 1", "topic 2", "topic 3");
+    topic = new ComboBox();
+    Set<String> topics = quiz.getAllTopics();
+    for (String t : topics) {
+      topic.getItems().add(t);
+    }
     topic.scaleShapeProperty();
     Label HowManyQuestions = new Label("How Many Questions?");
     HowManyQuestions.setAlignment(Pos.CENTER);
-    TextArea numQuestion = new TextArea();
+    TextField numQuestion = new TextField();
     numQuestion.setPrefColumnCount(1);
     numQuestion.setPrefHeight(1);
     topicBox.getChildren().add(whatTopic);
@@ -69,14 +87,31 @@ public class TakeQuizButton {
 
 
     takeButtonQuizScene = new Scene(root, 800, 400);
-    questionScreen = new QuestionScreen(primaryStage, mainScene, this.qNum, maxQuestions).getScene();
-    next.setOnAction(e -> primaryStage.setScene(questionScreen));
+    next.setOnAction(e -> HandleButton(numQuestion.getText()));
 
   }
 
   public Scene getScene() {
 
     return takeButtonQuizScene;
+  }
+
+  private void HandleButton(String numQuestions) {
+    try {
+      topic.setOnAction(e -> {topicTested = topic.getAccessibleText();});
+      questionList = quiz.getTopicQuestions(topicTested);
+      Collections.shuffle(questionList);
+      questionScreen = new QuestionScreen(primaryStage, mainScene, this.qNum,
+          Integer.valueOf(numQuestions), quiz, questionList, 0).getScene();
+      next.setOnAction(e -> primaryStage.setScene(questionScreen));
+    } catch (NumberFormatException e1) {
+      
+      boolean answer =
+          Warning.display("WARNING!", "You did not type in a number, Please Type in a Number", false);
+    } catch (Exception e2) {
+      boolean answer =
+          Warning.display("WARNING!", "There is no topic selected", false);
+    }
   }
 
 }

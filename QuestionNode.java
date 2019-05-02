@@ -7,15 +7,22 @@ public class QuestionNode {
   private boolean TorF;
   private ArrayList<AnswerNode> answerList;
 
-  //constructor
+
   public QuestionNode(String question, AnswerNode answerA, AnswerNode answerB, AnswerNode answerC,
-      AnswerNode answerD, Boolean TorF) { 
+      AnswerNode answerD, Boolean TorF) {
     this.question = question;
     answerList = new ArrayList<AnswerNode>();
     answerList.add(answerA);
     answerList.add(answerB);
     answerList.add(answerC);
     answerList.add(answerD);
+    this.TorF = TorF;
+  }
+  public QuestionNode(String question, AnswerNode answerA, AnswerNode answerB, Boolean TorF) {
+    this.question = question;
+    answerList = new ArrayList<AnswerNode>();
+    answerList.add(answerA);
+    answerList.add(answerB);
     this.TorF = TorF;
   }
   

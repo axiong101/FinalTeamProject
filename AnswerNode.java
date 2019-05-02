@@ -1,9 +1,7 @@
-    
 package application;
 
 public class AnswerNode {
 
-  // creates answerNodes for use
   private String answer;
   private boolean correct;
   
