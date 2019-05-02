@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class AnwserType {
  static Scene scene, multiple, trueOrFalse;
 
-   public static void display(String title, String message) {
+   public static void display(String title, String message, QuizGraph graph, String topic, String question) {
      Stage window = new Stage();
      
      window.initModality(Modality.APPLICATION_MODAL);
@@ -27,11 +27,11 @@ public class AnwserType {
      Button b1 = new Button("Multiple Choice Questions");
      Button b2 = new Button("True/False");
      b1.setOnAction(e -> {
-      multiple = new MultipleChoice(window, scene).getScene();
+      multiple = new MultipleChoice(window, scene, graph, topic, question).getScene();
       window.setScene(multiple); 
      });
       b2.setOnAction(e -> {
-      trueOrFalse = new TrueOrFalse(window, scene).getScene();
+      trueOrFalse = new TrueOrFalse(window, scene, graph, topic, question).getScene();
        window.setScene(trueOrFalse); 
       });
      VBox layout = new VBox(10);

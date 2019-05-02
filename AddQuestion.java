@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class AddQuestion {
    Scene scene1; 
    String topic; 
-       AddQuestion(Stage primaryStage, Scene scene) {
+       AddQuestion(Stage primaryStage, Scene scene, QuizGraph graph) {
 
             VBox vb = new VBox();
             vb.setPadding(new Insets(100, 100, 100, 100));
@@ -23,9 +23,6 @@ public class AddQuestion {
             vb.getChildren().add(topLabel);
 
             ComboBox cb = new ComboBox();
-            cb.getItems().add("Movies");
-            cb.getItems().add("Video Games");
-            cb.getItems().add("Food");
             vb.getChildren().add(cb);
 
             Button b1 = new Button("Create new Topic");
@@ -36,7 +33,11 @@ public class AddQuestion {
             b3.setOnAction(e -> primaryStage.setScene(scene));
             b1.setOnAction(e -> {
               topic = NewTopic.display("New Topic", "New Topic");
+              if(topic.equals("")) {
+                return; 
+              }
               cb.getItems().add(topic); 
+              graph.addTopic(topic); 
             });
             
             
@@ -49,7 +50,14 @@ public class AddQuestion {
             Button b2 = new Button("Add");
             vb.getChildren().add(b2);
             b2.setOnAction(e -> {
-              AnwserType.display("Anwser Type", "Anwser Type");
+              if(tf.getText().isEmpty()) {
+                Warning.display("Warning", "Question field is blank, please enter a question");
+              return; 
+              }
+              String question = tf.getText(); 
+              
+              AnwserType.display("Anwser Type", "Anwser Type", graph, topic, question);
+        
             });
             // Adding VBox to the scene
             scene1 = new Scene(vb); 
