@@ -23,9 +23,6 @@ import javafx.stage.Stage;
 public class AddQuestion {
    Scene scene1; 
    static String topic; 
-   static FileChooser fileChooser = new FileChooser();
-   static Desktop desktop = Desktop.getDesktop();
-   static Image image; 
    public static QuizGraph display(Stage primaryStage, QuizGraph graph) {
     
          Stage window = new Stage();
@@ -46,8 +43,8 @@ public class AddQuestion {
 
             Button b1 = new Button("Create new Topic");
             Button b3 = new Button("Back To Menu");
-            Button openButton = new Button("Add A Picture");
-            vb.getChildren().addAll(b1,b3,openButton); 
+        
+            vb.getChildren().addAll(b1,b3); 
             b3.setOnAction(e -> window.close());
             b1.setOnAction(e -> {
               topic = NewTopic.display("New Topic", "New Topic");
@@ -58,19 +55,7 @@ public class AddQuestion {
               graph.addTopic(topic); 
             });
             
-            openButton.setOnAction(
-                new EventHandler<ActionEvent>() {
-                  @Override
-                  public void handle(final ActionEvent e) {
-                      File file = fileChooser.showOpenDialog(primaryStage);
-                      if (file != null) {
-                         image = new Image(file.toURI().toString());
-                         Warning.display("Success", "Sucessfully Saved Image To Question", false); 
-                      } 
-                  }
-              });
-            
-            
+                
             Label label = new Label("Type Your Question");
          
             vb.getChildren().add(label);
@@ -87,7 +72,7 @@ public class AddQuestion {
               String question = tf.getText(); 
               String userTopic = cb.getValue(); 
               
-              AnwserType.display("Anwser Type", "Anwser Type", graph, userTopic, question, image);
+              AnwserType.display("Anwser Type", "Anwser Type", graph, userTopic, question, primaryStage);
         
             });
             // Adding VBox to the scene

@@ -1,6 +1,8 @@
+    
 package application;
 
 import java.awt.Window;
+import java.io.File;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,8 +14,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class MultipleChoice {
@@ -33,7 +37,8 @@ public class MultipleChoice {
   ComboBox<String> cb3 = new ComboBox<String>(FXCollections.observableArrayList(correctOrWrong));
   ComboBox<String> cb4 = new ComboBox<String>(FXCollections.observableArrayList(correctOrWrong));
   ComboBox<String> cb5 = new ComboBox<String>(FXCollections.observableArrayList(correctOrWrong));
-  
+  static FileChooser fileChooser = new FileChooser();
+  Image image; 
   MultipleChoice(Stage window, Scene scene, QuizGraph graph, String topic, String question) {
     VBox Vb = new VBox(7);
     Vb.setPadding(new Insets(20, 50, 50, 50));
@@ -49,14 +54,24 @@ public class MultipleChoice {
     
      TextField tf4 = new TextField();
      TextField tf5 = new TextField();
-
+     Button openButton = new Button("Add A Picture");
      Hb1.getChildren().addAll(tf1, cb1);
      Hb2.getChildren().addAll(tf2, cb2);
      Hb3.getChildren().addAll(tf3, cb3);
      Hb4.getChildren().addAll(tf4, cb4);
      Hb5.getChildren().addAll(tf5, cb5);
      
-
+     openButton.setOnAction(
+         new EventHandler<ActionEvent>() {
+           @Override
+           public void handle(final ActionEvent e) {
+               File file = fileChooser.showOpenDialog(window);
+               if (file != null) {
+                  image = new Image(file.toURI().toString());
+                  Warning.display("Success", "Sucessfully Saved Image To Question", false); 
+               } 
+           }
+       });
      // Create action event 
      EventHandler<ActionEvent> event1 = 
                new EventHandler<ActionEvent>() { 
@@ -143,7 +158,7 @@ public class MultipleChoice {
       a4 = new AnswerNode(answer4, c4); 
       a5 = new AnswerNode(answer5, c5); 
       
-      q1 = new QuestionNode(question,a1,a2,a3,a4,a5,false, null);
+      q1 = new QuestionNode(question,a1,a2,a3,a4,a5,false,image);
       graph.addQuestion(topic, q1);
       questionSaved = new QuestionSaved(window, scene1).getScene();
       window.setScene(questionSaved);
@@ -154,7 +169,7 @@ public class MultipleChoice {
     b1.setTranslateX(150);
     b1.setTranslateY(30);
     
-    Vb.getChildren().addAll(topLabel, Hb1, Hb2, Hb3, Hb4,Hb5, b1, b2);
+    Vb.getChildren().addAll(topLabel, Hb1, Hb2, Hb3, Hb4,Hb5,openButton, b1, b2);
 
     scene1 = new Scene(Vb);
   }
