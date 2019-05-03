@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.util.Set;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -28,11 +29,12 @@ public class Main extends Application {
   QuizGraph quiz;
   Button takeQ;
   TakeQuizButton t1;
-
   @Override
   public void start(Stage primaryStage) {
-
+    
     try {
+      
+      (new File("saveFiles")).mkdir();
       quiz = new QuizGraph();
       BorderPane root = new BorderPane();
       scene2 = new Scene(root, 800, 800);
@@ -87,13 +89,13 @@ public class Main extends Application {
         closeProgram(primaryStage);
       });
       save.setOnAction(e -> {
-        boolean results =
-            Save.saveMethod("Save Window", "Are you sure you want to create a new save?");
+        
+            Save.saveMethod("Save Window", "Are you sure you want to create a new save?", quiz);
       });
 
       load.setOnAction(e -> {
-        boolean result2 =
-            Load.loadMethod("Load Window", "Are you sure you want to load the previous savefile?");
+        Load.loadMethod("Load Window",
+            "Are you sure you want to load the previous savefile?", quiz);
       });
 
       String message =
@@ -106,8 +108,8 @@ public class Main extends Application {
       });
 
       t1 = new TakeQuizButton(primaryStage, scene2, 1, quiz);
-      takeQ.setOnAction(e -> primaryStage
-          .setScene(new TakeQuizButton(primaryStage, scene2, 1, quiz).getScene()));
+      takeQ.setOnAction(
+          e -> primaryStage.setScene(new TakeQuizButton(primaryStage, scene2, 1, quiz).getScene()));
       // setLeft
 
       // setRight
