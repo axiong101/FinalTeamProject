@@ -94,15 +94,16 @@ public class QuestionScreen {
       answerD.setOnAction(e -> handleButton(answerD.getBoolean()));
       answerE.setOnAction(e -> handleButton(answerE.getBoolean()));
     }
-    root.setCenter(center);
+    root.setLeft(center);
 
     // setLeft
     if (questionTested.getImage() != null) {
-      ImageView imageV = new ImageView(image);
       image = questionTested.getImage();
-      imageV.maxWidth(300);
-      imageV.maxHeight(300);
-      root.setLeft(imageV);
+      ImageView imageV = new ImageView(image);
+      imageV.setFitHeight(200);
+      imageV.setFitWidth(200);
+      imageV.setPreserveRatio(true);
+      root.setCenter(imageV);
     }
 
     questionScreen = new Scene(root, 800, 400);
