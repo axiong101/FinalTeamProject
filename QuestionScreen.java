@@ -45,7 +45,10 @@ public class QuestionScreen {
     this.mainScene = mainScene;
     this.maxQuestions = maxQuestions;
     this.qNum++;
+    try {
     questionTested = questionList.get(qNum - 1);
+    } catch (IndexOutOfBoundsException e) {
+    }
 
     // setTop
     HBox topLabel = new HBox();
