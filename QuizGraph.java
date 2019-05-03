@@ -16,7 +16,7 @@ public class QuizGraph {
   private int questionNum;
   private int topicNum;
   private Set<String> topicSet;
-  private List<String> questionList;
+
   
 
   /*
@@ -27,7 +27,6 @@ public class QuizGraph {
     questionNum = 0;
     topicNum = 0;
     topicSet = new TreeSet<String>();
-    questionList = null;
   }
 
   /**
@@ -72,8 +71,8 @@ public class QuizGraph {
    */
   public void addQuestion(String topic, QuestionNode question) {
     if (topic != null && question != null) {
-      if (graph.containsKey(topic) && graph.containsKey(question)) {
-        if (!graph.get(topic).contains(question) || !graph.get(question).contains(topic)) {
+      if (graph.containsKey(topic)) {
+        if (!graph.get(topic).contains(question)) {
           graph.get(topic).add(question);
           questionNum++;
         }
@@ -116,6 +115,10 @@ public class QuizGraph {
    */
   public int topicNum() {
     return topicNum;
+  }
+  
+  public TreeMap<String, ArrayList<QuestionNode>> getGraph(){
+    return graph;
   }
 }
 
