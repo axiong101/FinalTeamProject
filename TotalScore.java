@@ -29,18 +29,14 @@ public class TotalScore {
      Label tx = new Label();
      score.setFont(new Font("Times New Roman", 25));
      score.setText("Total Score:");
-     double percentCorrect = (numTaken/totalCorrect) * 100;
+     double percentCorrect = (totalCorrect/numTaken) * 100;
      tx.setText(Double.valueOf(percentCorrect) + "%");
      
-     Button save = new Button("Save");
      Button mainMenu = new Button("Main Menu");
      
-     save.setOnAction(e -> {
-       boolean results = Save.saveMethod("Save Window", "Are you sure you want to create a new save?");
-      });
      
      VBox layout = new VBox();
-     layout.getChildren().addAll(score, tx, save, mainMenu);
+     layout.getChildren().addAll(score, tx, mainMenu);
      layout.setSpacing(10.0);
      layout.setAlignment(Pos.CENTER);
     

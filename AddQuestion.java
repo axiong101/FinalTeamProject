@@ -12,64 +12,70 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class AddQuestion {
-   Scene scene1; 
-   static String topic; 
-   public static QuizGraph display(Stage primaryStage, QuizGraph graph) {
-    
-         Stage window = new Stage();
-         window.initModality(Modality.APPLICATION_MODAL);
-         window.setTitle("Add Question");
-         window.setMinWidth(250);
+  Scene scene1;
+  static String topic;
 
-            VBox vb = new VBox();
-            vb.setPadding(new Insets(100, 100, 100, 100));
-            vb.setSpacing(10);
+  public static QuizGraph display(Stage primaryStage, QuizGraph graph) {
 
-            Label topLabel = new Label("What Topic?");
-            vb.getChildren().add(topLabel);
+    Stage window = new Stage();
+    window.initModality(Modality.APPLICATION_MODAL);
+    window.setTitle("Add Question");
+    window.setMinWidth(250);
 
-            ComboBox<String> cb = new ComboBox();
-            vb.getChildren().add(cb);
+    VBox vb = new VBox();
+    vb.setPadding(new Insets(100, 100, 100, 100));
+    vb.setSpacing(10);
 
-            Button b1 = new Button("Create new Topic");
-            Button b3 = new Button("Back To Menu");
-         
-            vb.getChildren().add(b1);
-            vb.getChildren().add(b3); 
-            b3.setOnAction(e -> window.close());
-            b1.setOnAction(e -> {
-              topic = NewTopic.display("New Topic", "New Topic");
-              if(topic.equals("")) {
-                return; 
-              }
-              cb.getItems().add(topic); 
-              graph.addTopic(topic); 
-            });
-            
-            
-            Label label = new Label("Type Your Question");
-         
-            vb.getChildren().add(label);
-            
-            TextField tf = new TextField();
-            vb.getChildren().add(tf);
-            Button b2 = new Button("Add");
-            vb.getChildren().add(b2);
-            b2.setOnAction(e -> {
-              if(tf.getText().isEmpty()) {
-                Warning.display("Warning", "Question field is blank, please enter a question", false);
-              return; 
-              }
-              String question = tf.getText(); 
-              
-              AnwserType.display("Anwser Type", "Anwser Type", graph, topic, question);
-        
-            });
-            // Adding VBox to the scene
-            Scene scene1 = new Scene(vb);
-            window.setScene(scene1);
-            window.showAndWait();
-           
-          return graph; 
-       }
-    }
+    Label topLabel = new Label("What Topic?");
+    vb.getChildren().add(topLabel);
+
+    ComboBox<String> cb = new ComboBox();
+    cb.getItems().addAll(graph.getAllTopics());
+    vb.getChildren().add(cb);
+
+
+    Button b1 = new Button("Create new Topic");
+    Button b3 = new Button("Back To Menu");
+
+    vb.getChildren().add(b1);
+    vb.getChildren().add(b3);
+    b3.setOnAction(e -> window.close());
+    b1.setOnAction(e -> {
+      topic = NewTopic.display("New Topic", "New Topic");
+      if (topic.equals("")) {
+        return;
+      }
+      cb.getItems().add(topic);
+      graph.addTopic(topic);
+    });
+
+
+    Label label = new Label("Type Your Question");
+
+    vb.getChildren().add(label);
+
+    TextField tf = new TextField();
+    vb.getChildren().add(tf);
+    Button b2 = new Button("Add");
+    vb.getChildren().add(b2);
+    b2.setOnAction(e -> {
+      if (tf.getText().isEmpty() || cb.getValue() == null) {
+        Warning.display("Warning",
+            "Question field or topic Selection is blank, please enter a question or topic Selection",
+            false);
+        return;
+      }
+      String question = tf.getText();
+      String userTopic = cb.getValue();
+
+      AnwserType.display("Anwser Type", "Anwser Type", graph, userTopic, question);
+
+    });
+    // Adding VBox to the scene
+    Scene scene1 = new Scene(vb);
+    window.setScene(scene1);
+    window.showAndWait();
+
+    return graph;
+  }
+}

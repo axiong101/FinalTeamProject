@@ -17,6 +17,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -38,7 +39,7 @@ public class TakeQuizButton {
   String topicTested;
   ArrayList<QuestionNode> questionList;
   QuizGraph quiz;
-  private Object window;
+
 
   protected TakeQuizButton(Stage primaryStage, Scene mainScene, int qNum, QuizGraph quiz) {
 
@@ -47,6 +48,7 @@ public class TakeQuizButton {
     this.qNum = qNum;
     this.mainScene = mainScene;
     this.primaryStage = primaryStage;
+    
 
     // set top
     HBox top = new HBox();
@@ -54,6 +56,7 @@ public class TakeQuizButton {
     top.getChildren().add(helper);
     top.setAlignment(Pos.TOP_RIGHT);
     root.setTop(top);
+    
 
     // set center
     HBox hbox = new HBox();
@@ -63,10 +66,6 @@ public class TakeQuizButton {
     whatTopic.setAlignment(Pos.CENTER);
     topic = new ComboBox<String>();
     Set<String> topics = quiz.getAllTopics();
-
-    Set<String> a = new TreeSet<String>();
-    a.add("a");
-    a.add("b");
 
     for (String t : topics) {
       topic.getItems().add(t);
@@ -86,6 +85,7 @@ public class TakeQuizButton {
     vbox.getChildren().add(hbox);
     vbox.setAlignment(Pos.CENTER);
     root.setCenter(vbox);
+   
 
     // set bottom
     HBox bottom = new HBox();
@@ -119,7 +119,6 @@ public class TakeQuizButton {
 
   private void HandleButton(String numQuestions, QuizGraph quiz) {
     try {
-      System.out.println(topicTested);
       questionList = quiz.getTopicQuestions(topicTested);
       Collections.shuffle(questionList);
       next.setOnAction(e -> {
@@ -127,12 +126,11 @@ public class TakeQuizButton {
             Integer.valueOf(numQuestions), quiz, questionList, 0).getScene());
       });
     } catch (NumberFormatException e1) {
-
       boolean answer = Warning.display("WARNING!",
           "You did not type in a number, Please Type in a Number", false);
     } catch (Exception e2) {
       e2.printStackTrace();
-      boolean answer = Warning.display("WARNING!", "unexpected exception thrown", false);
+      boolean answer = Warning.display("WARNING!", "Topic not selected", false);
     }
   }
 
