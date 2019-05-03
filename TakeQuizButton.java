@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -48,7 +49,7 @@ public class TakeQuizButton {
     this.qNum = qNum;
     this.mainScene = mainScene;
     this.primaryStage = primaryStage;
-    
+
 
     // set top
     HBox top = new HBox();
@@ -56,7 +57,7 @@ public class TakeQuizButton {
     top.getChildren().add(helper);
     top.setAlignment(Pos.TOP_RIGHT);
     root.setTop(top);
-    
+
 
     // set center
     HBox hbox = new HBox();
@@ -76,26 +77,29 @@ public class TakeQuizButton {
     TextField numQuestion = new TextField();
     numQuestion.setPrefColumnCount(1);
     numQuestion.setPrefHeight(1);
-    topicBox.getChildren().add(whatTopic);
-    topicBox.getChildren().add(topic);
-    topicBox.getChildren().add(HowManyQuestions);
-    topicBox.getChildren().add(numQuestion);
+    HBox buttonHBox = new HBox();
+    Button back = new Button("Back");
+    back.setTranslateY(15);
+    next = new Button("Next");
+    next.setTranslateY(15);
+    next.setTranslateX(45);
+    buttonHBox.getChildren().addAll(back, next);
+    back.setOnAction(e -> primaryStage.setScene(mainScene));
+    topicBox.getChildren().addAll(whatTopic,topic, HowManyQuestions, numQuestion, buttonHBox);
     hbox.getChildren().add(topicBox);
     hbox.setAlignment(Pos.CENTER);
     vbox.getChildren().add(hbox);
     vbox.setAlignment(Pos.CENTER);
+    
     root.setCenter(vbox);
-   
+
 
     // set bottom
-    HBox bottom = new HBox();
+
     Label numQLabel = new Label("Number of Questions in Database: " + quiz.questionNum());
     numQLabel.setAlignment(Pos.BOTTOM_LEFT);
     numQLabel.setFont(new Font("Times New Roman", 20));
-    next = new Button("next");
-    next.setTranslateX(400);
-    bottom.getChildren().addAll(numQLabel, next);
-    root.setBottom(bottom);
+    root.setBottom(numQLabel);
 
     EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
       public void handle(ActionEvent e) {
@@ -121,16 +125,16 @@ public class TakeQuizButton {
     try {
       questionList = quiz.getTopicQuestions(topicTested);
       Collections.shuffle(questionList);
-      next.setOnAction(e -> {
-        primaryStage.setScene(new QuestionScreen(primaryStage, mainScene, this.qNum,
-            Integer.valueOf(numQuestions), quiz, questionList, 0).getScene());
-      });
+      primaryStage.setScene(new QuestionScreen(primaryStage, mainScene, this.qNum,
+          Integer.valueOf(numQuestions), quiz, questionList, 0).getScene());
     } catch (NumberFormatException e1) {
       boolean answer = Warning.display("WARNING!",
-          "You did not type in a number, Please Type in a Number", false);
+          "  You did not type in a number, Please Type in a Number  ", false);
     } catch (Exception e2) {
-      e2.printStackTrace();
-      boolean answer = Warning.display("WARNING!", "Topic not selected", false);
+      boolean answer = Warning.display("WARNING!",
+          "  No topic selected or there are no questions for topic yet.  \n  Please select a topic or"
+              + " go back and add question to topic.  ",
+          false);
     }
   }
 
