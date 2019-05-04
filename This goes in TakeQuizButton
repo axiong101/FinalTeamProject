@@ -1,0 +1,10 @@
+Button helper;
+
+String message = "What Topic: this is a drop box that lets the user choose one of the many topics the user have created.\n" + 
+          "How many questions? textbox: this box allows ths user to choose the amount of questions to take.\n" + 
+          "Back button: this button takes the user back to the main menu.\n" + 
+          "Next button: this button takes the users to the quiz after they filled out the required spaces.\n";
+    
+    helper.setOnAction(e -> {
+      boolean results = HelperTakeQuiz.display("Help", message);
+    });
