@@ -36,7 +36,10 @@ public static void display(QuizGraph graph) {
       new EventHandler<ActionEvent>() {
         @Override
         public void handle(final ActionEvent e) {
+         
             File file = fileChooser.showOpenDialog(window);
+            File existDirectory = file.getParentFile();
+            fileChooser.setInitialDirectory(existDirectory);
             if (file != null) {
                try {
                 loadHelper(file, graph);
@@ -52,10 +55,6 @@ public static void display(QuizGraph graph) {
    Scene scene = new Scene(vb);
    window.setScene(scene);
    window.showAndWait();
-  
-  
-  // Adding VBox to the scene
-  window.showAndWait();
 }
 
 private static void loadHelper(File file,QuizGraph graph) throws FileNotFoundException, IOException, org.json.simple.parser.ParseException  {
@@ -68,33 +67,29 @@ JSONArray packageArray = (JSONArray) jo.get("questionArray");
   {
     ArrayList<AnswerNode> a = new ArrayList<AnswerNode>(); 
     QuestionNode q; 
-    Image image;
+    String image;
     String topic; 
     boolean isCorrect; 
-    boolean ToF = false; 
+//    boolean ToF = false; 
     JSONObject question = (JSONObject) o;
 
-    String ToFQuestion = (String) question.get("meta-data");
-    if(!ToFQuestion.equals("unused")){
-      if(ToFQuestion.equals("true") || ToFQuestion.equals("false")) {
-      if(ToFQuestion.equalsIgnoreCase("true")) {
-         ToF = true; 
-      } else {
-         ToF = false; 
-      }
-    }
-    }
+//    String ToFQuestion = (String) question.get("meta-data");
+//    if(!ToFQuestion.equals("unused")){
+//      if(ToFQuestion.equals("true") || ToFQuestion.equals("false")) {
+//      if(ToFQuestion.equalsIgnoreCase("true")) {
+//         ToF = true; 
+//      } else {
+//         ToF = false; 
+//      }
+//    }
+//    }
     String questionText = (String) question.get("questionText");
     
     topic = (String) question.get("topic");
     graph.addTopic(topic);
     
-    String sImage = (String) question.get("image");
-    if(!sImage.equals("none")) {
-    image = (Image) question.get("image");
-    } else {
-       image = null; 
-    }
+     image = (String) question.get("image");
+   
     JSONArray choice = (JSONArray) question.get("choiceArray");
     for (Object c : choice)
     {
@@ -109,7 +104,7 @@ JSONArray packageArray = (JSONArray) jo.get("questionArray");
         a.add(new AnswerNode(choiceForGraph, isCorrect));
       } 
   }
-    if(!ToF) {
+    if(a.size() == 5) {
       q = new QuestionNode(questionText,a.get(0),a.get(1),a.get(2),a.get(3),a.get(4),false,image);
       graph.addQuestion(topic, q);
     }else {

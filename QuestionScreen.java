@@ -31,7 +31,7 @@ public class QuestionScreen {
   ArrayList<QuestionNode> questionList;
   QuestionNode questionTested;
   int totalCorrect;
-  Image image;
+  String image;
 
   protected QuestionScreen(Stage primaryStage, Scene mainScene, int qNum, int maxQuestions,
       QuizGraph quiz, ArrayList<QuestionNode> questionList, int totalCorrect) {
@@ -45,10 +45,7 @@ public class QuestionScreen {
     this.mainScene = mainScene;
     this.maxQuestions = maxQuestions;
     this.qNum++;
-    try {
     questionTested = questionList.get(qNum - 1);
-    } catch (IndexOutOfBoundsException e) {
-    }
 
     // setTop
     HBox topLabel = new HBox();
@@ -100,9 +97,10 @@ public class QuestionScreen {
     root.setLeft(center);
 
     // setLeft
-    if (questionTested.getImage() != null) {
+    if (!questionTested.getImage().equals("none")) {
       image = questionTested.getImage();
-      ImageView imageV = new ImageView(image);
+      Image imageForm = new Image(image); 
+      ImageView imageV = new ImageView(imageForm);
       imageV.setFitHeight(200);
       imageV.setFitWidth(200);
       imageV.setPreserveRatio(true);

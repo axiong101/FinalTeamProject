@@ -38,7 +38,7 @@ public class MultipleChoice {
   ComboBox<String> cb4 = new ComboBox<String>(FXCollections.observableArrayList(correctOrWrong));
   ComboBox<String> cb5 = new ComboBox<String>(FXCollections.observableArrayList(correctOrWrong));
   static FileChooser fileChooser = new FileChooser();
-  Image image; 
+  String image; 
   MultipleChoice(Stage window, Scene scene, QuizGraph graph, String topic, String question) {
     VBox Vb = new VBox(7);
     Vb.setPadding(new Insets(20, 50, 50, 50));
@@ -67,7 +67,7 @@ public class MultipleChoice {
            public void handle(final ActionEvent e) {
                File file = fileChooser.showOpenDialog(window);
                if (file != null) {
-                  image = new Image(file.toURI().toString());
+                  image = file.getName();
                   Warning.display("Success", "Sucessfully Saved Image To Question", false); 
                } 
            }

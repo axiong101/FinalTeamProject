@@ -21,7 +21,7 @@ public class TrueOrFalse {
    AnswerNode a1, a2; 
    QuestionNode q1; 
    static FileChooser fileChooser = new FileChooser();
-   Image image; 
+   String image; 
        TrueOrFalse(Stage window, Scene scene, QuizGraph graph, String topic, String question) {
          VBox vb = new VBox();
          vb.setPadding(new Insets(20, 50, 50, 50));
@@ -39,7 +39,7 @@ public class TrueOrFalse {
                public void handle(final ActionEvent e) {
                    File file = fileChooser.showOpenDialog(window);
                    if (file != null) {
-                      image = new Image(file.toURI().toString());
+                      image = file.getName(); 
                       Warning.display("Success", "Sucessfully Saved Image To Question", false); 
                    } 
                }
