@@ -1,13 +1,14 @@
 package application;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,9 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -31,84 +34,66 @@ public class Save extends Button {
   static String file;
   static boolean answer;
 
-
-  @SuppressWarnings("unchecked")
-  public static void saveHelper(String jsonFilepath, QuizGraph qg) throws FileNotFoundException,
+  public static void saveHelper(String newFileName, QuizGraph quiz) throws FileNotFoundException,
       IOException, ParseException, org.json.simple.parser.ParseException {
-    // Object obj = new JSONParser().parse(new FileReader(jsonFilepath));
-    JSONObject jsonFile = new JSONObject(); // w (JSONObject) obj;
-    // JSONArray packageArray = (JSONArray) jo.get("questionArray");
-    
-   // Map<String, Object> formatter = new LinkedHashMap<String, Object>();
-    
-    Set<String> topics = qg.getAllTopics();
-    // JSONArray jsonTopics = new JSONArray();
-    JSONArray jsonQuestions = new JSONArray();
+
+
+    JSONObject jasonSaveFile = new JSONObject();
+    JSONArray questionArray = new JSONArray();
+
+    jasonSaveFile.put("questionArray", (JSONArray) questionArray);
+
+
+    Set<String> topics = quiz.getAllTopics();
+    System.out.println(1);
     for (String topic : topics) {
-      // JSONObject jsonTopic = new JSONObject();
-
-      ArrayList<QuestionNode> questions = qg.getTopicQuestions(topic);
-      // JSONArray jsonQuestions = new JSONArray();
-      for (QuestionNode question : questions) {
-        JSONObject jsonQuestion = new JSONObject();
-
-        // jsonQuestion.put("TorF", question.TorF());
-
-        jsonQuestion.put("meta-data", "unused");
-        jsonQuestion.put("questionText", question.getQuestion());
-        jsonQuestion.put("topic", topic);
-        jsonQuestion.put("image", "none");
-
-        JSONArray answerList = new JSONArray();
-        for (AnswerNode answer : question.getAnswerList()) {
-          JSONObject jsonAnswer = new JSONObject();
-          jsonAnswer.put("choice", answer.getAnswer());
-          jsonAnswer.put("isCorrect", answer.getCorrect());
-          answerList.add(jsonAnswer);
+      System.out.println(2);
+      System.out.println(topic);
+      ArrayList<QuestionNode> questions = quiz.getTopicQuestions(topic);
+      for (QuestionNode q : questions) {
+        System.out.println(3);
+        System.out.println(q.getQuestion());
+        Map<String, Object> m = new LinkedHashMap<String, Object>(5);
+        m.put("meta-data", "unused");
+        m.put("questionText", q.getQuestion());
+        m.put("topic", topic);
+        if (q.getImage() == null) {
+          m.put("imageFilename", "none");
+        } else {
+          m.put("imageFilename", q.getImage());
         }
-        jsonQuestion.put("choiceArray", answerList);
-        jsonQuestions.add(jsonQuestion);
+        System.out.println(4);
+        Map<String, String> mA = new LinkedHashMap<String, String>(2);
+        JSONArray answerArray = new JSONArray();
+        ArrayList<AnswerNode> answers = q.getAnswerList();
+        for (AnswerNode answer : answers) {
+          System.out.println(answer.getAnswer());
+          String correct;
+          if (answer.getCorrect())
+            correct = "T";
+          else
+            correct = "F";
+          mA.put("isCorrect", correct);
+          mA.put("choiceText", answer.getAnswer());
+          answerArray.add(mA);
+        }
+        m.put("choiceArray", answerArray);
+        questionArray.add(m);
       }
 
-      // jsonTopic.put("questions", jsonQuestions);
-
-
-      // jsonTopic.put("topic", topic);
-      // jsonTopic.put("meta-data", "unused");
-
-      // jsonTopics.add(jsonTopic);
     }
-
-    jsonFile.put("questionArray", jsonQuestions);
-   // formatter.put("questionArray", jsonQuestions);
-
+    System.out.println(5);
     try {
-      System.out.println(jsonFile.toJSONString());
-      FileWriter file = new FileWriter(jsonFilepath);
-      file.write(jsonFile.toJSONString());
-      file.flush();
-      file.close();
-    } catch (IOException e) {
-
+      FileWriter pw = new FileWriter(newFileName);
+      pw.write(jasonSaveFile.toJSONString());
+      System.out.println(6);
+      pw.flush();
+      pw.close();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
-    /*
-     * for (Object o : packageArray) { JSONObject person = (JSONObject) o;
-     * 
-     * String name = (String) person.put("meta-data", qg); System.out.println(name);
-     * 
-     * String city = (String) person.put("questionText", qg.getTopicQuestions("topic"));
-     * 
-     * System.out.println(city);
-     * 
-     * String topic = (String) person.put("topic", qg.getAllTopics()); qg.addTopic(topic);
-     * System.out.println(topic);
-     * 
-     * String image = (String) person.put("image", qg); System.out.println(image);
-     * 
-     * JSONArray choice = (JSONArray) person.put("choiceArray", qg.getGraph()); for (Object c :
-     * choice) { System.out.println(c+""); } }
-     */
+
   }
 
   public static void saveMethod(String Title, String message, QuizGraph qg) {
@@ -119,17 +104,17 @@ public class Save extends Button {
     Label save = new Label();
     save.setText(message);
 
+
+
     Button yButton = new Button("Yes");
     Button nButton = new Button("No");
 
+
+
     yButton.setOnAction(e -> {
       try {
-        saveHelper("C:\\Users\\Touger\\eclipse-workspace\\FinalTeamProject\\test.json", qg);
-        System.out.println(qg.getTopicQuestions("questionText"));
-        System.out.println(qg.questionNum());
-        System.out.println(qg.topicNum());
-        System.out.println(qg.getAllTopics());
-      } catch (IOException | ParseException | org.json.simple.parser.ParseException e2) {
+        createFile(qg);
+      } catch (Exception e2) {
         e2.printStackTrace();
       }
       // answer = true;
@@ -144,11 +129,55 @@ public class Save extends Button {
     VBox layout = new VBox();
     layout.getChildren().addAll(save, yButton, nButton);
     layout.setAlignment(Pos.CENTER);
-    Scene scene = new Scene(layout);
+    Scene scene = new Scene(layout, 400, 150);
     window.setScene(scene);
     window.showAndWait();
 
     // return answer;
   }
 
+  private static void createFile(QuizGraph quiz) {
+    Stage window = new Stage();
+    window.initModality(Modality.APPLICATION_MODAL);
+    window.setTitle("Save");
+    window.setMinWidth(250.0);
+    Label newFileLabel = new Label("New File Name:");
+    TextField newFile = new TextField();
+    Button save = new Button("save");
+
+    Label allFilesLabel = new Label("All Current Save Files:");
+    ComboBox<String> allFiles = new ComboBox<String>();
+    ArrayList<String> fileArray = getAllFiles();
+    for (String file : fileArray) {
+      allFiles.getItems().add(file);
+    }
+
+    save.setOnAction(e -> {
+      try {
+        saveHelper(newFile.getText(), quiz);
+      } catch (IOException | ParseException | org.json.simple.parser.ParseException e2) {
+        e2.printStackTrace();
+      }
+      window.close();
+    });
+
+    VBox layout = new VBox();
+    layout.setAlignment(Pos.CENTER);
+    layout.getChildren().addAll(allFilesLabel, allFiles, newFileLabel, newFile, save);
+    Scene scene = new Scene(layout, 400, 150);
+    window.setScene(scene);
+    window.showAndWait();
+  }
+
+  private static ArrayList<String> getAllFiles() {
+    File folder = new File(System.getProperty("user.dir") + "\\saveFiles");
+    File[] listOfFiles = folder.listFiles();
+    ArrayList<String> fileNames = new ArrayList<String>();
+    for (int i = 0; i < listOfFiles.length; i++) {
+      if (listOfFiles[i].isFile()) {
+        fileNames.add(listOfFiles[i].getName());
+      }
+    }
+    return fileNames;
+  }
 }
