@@ -8,6 +8,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import org.json.simple.JSONArray;
@@ -34,9 +36,11 @@ public class Save extends Button {
   public static void saveHelper(String jsonFilepath, QuizGraph qg) throws FileNotFoundException,
       IOException, ParseException, org.json.simple.parser.ParseException {
     // Object obj = new JSONParser().parse(new FileReader(jsonFilepath));
-    JSONObject mainObject = new JSONObject(); // w (JSONObject) obj;
+    JSONObject jsonFile = new JSONObject(); // w (JSONObject) obj;
     // JSONArray packageArray = (JSONArray) jo.get("questionArray");
-
+    
+   // Map<String, Object> formatter = new LinkedHashMap<String, Object>();
+    
     Set<String> topics = qg.getAllTopics();
     // JSONArray jsonTopics = new JSONArray();
     JSONArray jsonQuestions = new JSONArray();
@@ -50,24 +54,19 @@ public class Save extends Button {
 
         // jsonQuestion.put("TorF", question.TorF());
 
-        String image = "none";
-        if (question.getImage() != null)
-          image = question.getImage().toString();
-
-
+        jsonQuestion.put("meta-data", "unused");
+        jsonQuestion.put("questionText", question.getQuestion());
+        jsonQuestion.put("topic", topic);
+        jsonQuestion.put("image", "none");
 
         JSONArray answerList = new JSONArray();
         for (AnswerNode answer : question.getAnswerList()) {
           JSONObject jsonAnswer = new JSONObject();
-          jsonAnswer.put("answer", answer.getAnswer());
+          jsonAnswer.put("choice", answer.getAnswer());
           jsonAnswer.put("isCorrect", answer.getCorrect());
           answerList.add(jsonAnswer);
         }
         jsonQuestion.put("choiceArray", answerList);
-        jsonQuestion.put("image", image);
-        jsonQuestion.put("topic", topic);
-        jsonQuestion.put("questionText", question.getQuestion());
-        jsonQuestion.put("meta-data", "unused");
         jsonQuestions.add(jsonQuestion);
       }
 
@@ -80,12 +79,13 @@ public class Save extends Button {
       // jsonTopics.add(jsonTopic);
     }
 
-    mainObject.put("questionArray", jsonQuestions);
+    jsonFile.put("questionArray", jsonQuestions);
+   // formatter.put("questionArray", jsonQuestions);
 
     try {
-      System.out.println(mainObject.toJSONString());
+      System.out.println(jsonFile.toJSONString());
       FileWriter file = new FileWriter(jsonFilepath);
-      file.write(mainObject.toJSONString());
+      file.write(jsonFile.toJSONString());
       file.flush();
       file.close();
     } catch (IOException e) {
